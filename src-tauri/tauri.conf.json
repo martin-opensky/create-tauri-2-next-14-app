@@ -29,7 +29,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "tauri-app",
+        "title": "Tauri + Next app",
         "width": 800,
         "height": 600
       }
@@ -37,7 +37,13 @@
   },
   "plugins": {
     "shell": {
-      "open": true
+      "scope": [
+        {
+          "name": "run-node-version",
+          "cmd": "node",
+          "args": ["-v"]
+        }
+      ]
     }
   }
 }

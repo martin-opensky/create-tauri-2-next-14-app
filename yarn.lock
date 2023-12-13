@@ -385,6 +385,13 @@
   dependencies:
     "@tauri-apps/api" "2.0.0-alpha.11"
 
+"@tauri-apps/plugin-fs@^2.0.0-alpha.3":
+  version "2.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/plugin-fs/-/plugin-fs-2.0.0-alpha.3.tgz#0555450730e3db565f11e36ca40f0f6a36229847"
+  integrity sha512-/itwHty0SMCgfT2TjM7T/zYixeoXWOMJSWGUc7HJCHYcMPpXxzq0HBn/w2f1O2/Td7naGiHEsIqBWHJmGdLZLA==
+  dependencies:
+    "@tauri-apps/api" "2.0.0-alpha.11"
+
 "@tauri-apps/plugin-shell@^2.0.0-alpha.3":
   version "2.0.0-alpha.3"
   resolved "https://registry.yarnpkg.com/@tauri-apps/plugin-shell/-/plugin-shell-2.0.0-alpha.3.tgz#f30aa7e2529794ea3dd6f1b6af79756b2fc27312"
