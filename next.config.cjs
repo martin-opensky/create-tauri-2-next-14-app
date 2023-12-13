@@ -1,10 +1,10 @@
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === 'production'
 module.exports = async (phase, { defaultConfig }) => {
-  let internalHost = null;
+  let internalHost = null
   // In dev mode we use the internal-ip to serve the assets
   if (!isProd) {
-    const { internalIpV4 } = await import('internal-ip');
-    internalHost = await internalIpV4();
+    const { internalIpV4 } = await import('internal-ip')
+    internalHost = await internalIpV4()
   }
   const nextConfig = {
     // Ensure Next.js uses SSG instead of SSR
@@ -16,7 +16,7 @@ module.exports = async (phase, { defaultConfig }) => {
       unoptimized: true,
     },
     // Configure assetPrefix or else the server won't properly resolve your assets.
-    // assetPrefix: isProd ? null : `http://${internalHost}:3000`,
-  };
-  return nextConfig;
-};
+    assetPrefix: isProd ? null : `http://${internalHost}:3000`,
+  }
+  return nextConfig
+}
