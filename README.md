@@ -1,13 +1,15 @@
 # To Get started
 
-- Install Tauri dependencies: (yarn in .)
-- Install Next dependencies: (yarn in /src)
+Install dependencies: _yarn_
 
 # Dev
 
-- Run Next server: yarn dev (in /src)
-- Run Tauri: yarn tauri dev (in .)
+_yarn tauri dev_
 
-# Build (Desktop)
+Will start Next.js server and Tauri app
 
-To follow
+# Build
+
+_yarn tauri build_
+
+Will build Next.js static app and Tauri app (for Mac)

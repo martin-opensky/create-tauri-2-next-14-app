@@ -81,13 +81,10 @@ export default function ActionBar() {
   const triggerCommand = async () => {
     const result = await Command.create('run-node-version', ['-v']).execute()
 
-    if (result.stdout) {
-      console.log('stdout', result.stdout)
-      setMsg(result.stdout)
-    } else if (result.stderr) {
-      console.log('stderr', result.stderr)
-      setMsg(result.stderr)
-    }
+    console.log(result)
+    const { code, signal, stderr, stdout } = result
+
+    setMsg(`Command: ${code} ${signal} ${stderr} ${stdout}`)
   }
 
   return (
