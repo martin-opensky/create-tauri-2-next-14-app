@@ -12,4 +12,6 @@ Will start Next.js server and Tauri app
 
 _yarn build_
 
+_yarn build --debug_ _to include dev tools in app_
+
 Will build Next.js static app and Tauri app (for Mac)
