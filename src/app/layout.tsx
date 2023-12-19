@@ -27,7 +27,7 @@ export default function RootLayout({
           <section className="border-r border-slate-200 p-1">
             <Navigation />
           </section>
-          <section className="flex flex-1 flex-col items-start gap-2 bg-white p-1">
+          <section className="flex flex-1 flex-col items-start gap-2 bg-white p-2">
             {children}
           </section>
         </main>
