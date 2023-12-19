@@ -31,14 +31,12 @@ type TableSchema<T> = { [K in keyof T]: TableField }
 
 export class DatabaseModel<T> {
   private db: Database | undefined
+  protected dbName: string = 'app.db'
+  protected tableName: string | undefined
   protected softDelete = true
   protected timestamps = true
 
-  constructor(
-    private dbName: string,
-    private tableName: string,
-    private tableSchema: Partial<TableSchema<T>>,
-  ) {
+  constructor(private tableSchema: Partial<TableSchema<T>>) {
     this.init()
   }
 
@@ -53,7 +51,11 @@ export class DatabaseModel<T> {
   }
 
   private async createTable() {
-    if (!this.tableSchema || Object.keys(this.tableSchema).length === 0) {
+    if (
+      !this.tableName ||
+      !this.tableSchema ||
+      Object.keys(this.tableSchema).length === 0
+    ) {
       throw new Error('Table schema could not be created')
     }
 
@@ -111,13 +113,12 @@ export class DatabaseModel<T> {
   }
 
   async all(): Promise<Array<T & CoreFields> | undefined> {
-    if (!this.db || !this.tableSchema) {
+    if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Get All: Database not initialized')
     }
 
     const result: Array<T & CoreFields> | undefined = await this.db.select(
-      `SELECT * FROM ${this.tableName}` +
-        (this.softDelete ? ' WHERE deleted_at IS NULL' : ''),
+      `SELECT * FROM ${this.tableName}` + (this.softDelete ? ' ' : ''),
     )
 
     if (!result || result.length === 0) return undefined
@@ -126,7 +127,7 @@ export class DatabaseModel<T> {
   }
 
   async get(id: number): Promise<(T & CoreFields) | undefined> {
-    if (!this.db || !this.tableSchema) {
+    if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Get: Database not initialized')
     }
 
@@ -140,17 +141,20 @@ export class DatabaseModel<T> {
   }
 
   async create(data: { [K in keyof T]: string | number }) {
-    if (!this.db || !this.tableSchema) {
+    if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Create: Database not initialized')
     }
 
     const keys = Object.keys(data)
     const values = Object.values(data)
 
-    const sql = `
-      INSERT INTO ${this.tableName} (${keys.join(', ')})
-      VALUES (${keys.map(() => '?').join(', ')})
-    `
+    let sql =
+      `
+      INSERT INTO ${this.tableName} (${keys.join(', ')}` +
+      (this.timestamps ? ', created_at, updated_at' : '') +
+      `) VALUES (${keys.map(() => '?').join(', ')}` +
+      (this.timestamps ? ", datetime('now'), datetime('now')" : '') +
+      `)`
 
     const createQuery = await this.db.execute(sql, values)
 
@@ -158,7 +162,7 @@ export class DatabaseModel<T> {
   }
 
   async update(id: number, data: { [K in keyof T]: string | number }) {
-    if (!this.db || !this.tableSchema) {
+    if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Update: Database not initialized')
     }
 
@@ -167,29 +171,33 @@ export class DatabaseModel<T> {
     const keys = Object.keys(data)
     const values = Object.values(data)
 
-    const sql = `
-      UPDATE ${this.tableName}
-      SET ${keys.map((key) => `${key}=?`).join(', ')}
-      WHERE id=?
-    `
+    let sql = `UPDATE ${this.tableName} SET ${keys
+      .map((key) => `${key}=?`)
+      .join(', ')}`
+    if (this.timestamps) {
+      sql += ", updated_at = datetime('now')"
+    }
+    sql += ' WHERE id=?'
 
     return await this.db.execute(sql, [...values, id])
   }
 
   async delete(id: number) {
-    if (!this.db || !this.tableSchema) {
+    if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Delete: Database not initialized')
     }
 
+    let sql = ''
     if (this.softDelete) {
-      return await this.db.execute(
-        `UPDATE ${this.tableName} SET deleted_at = datetime('now') WHERE id=?`,
-        [id],
-      )
+      sql = `UPDATE ${this.tableName} SET deleted_at = datetime('now')`
+      if (this.timestamps) {
+        sql += ", updated_at = datetime('now')"
+      }
+      sql += ' WHERE id=?'
+      return await this.db.execute(sql, [id])
     } else {
-      return await this.db.execute(`DELETE FROM ${this.tableName} WHERE id=?`, [
-        id,
-      ])
+      sql = `DELETE FROM ${this.tableName} WHERE id=?`
+      return await this.db.execute(sql, [id])
     }
   }
 

@@ -312,11 +312,6 @@
   dependencies:
     tslib "^2.4.0"
 
-"@tauri-apps/api@2.0.0-alpha.11":
-  version "2.0.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-2.0.0-alpha.11.tgz#091afafc1d49a7009aa8ea18864e4f4e38133905"
-  integrity sha512-aw7jic+MQAe/LH4fYhbd3bwx3YjXhDIwqKJIn5QO4yKmGdVURIhZSFcyeKkSe4P6Itdto0Pcz99vLfkgBwdQKw==
-
 "@tauri-apps/api@2.0.0-alpha.12":
   version "2.0.0-alpha.12"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-2.0.0-alpha.12.tgz#0e5d77be29b63c91ddcb9890c97157b56df2aa84"
@@ -400,19 +395,19 @@
   dependencies:
     "@tauri-apps/api" "2.0.0-alpha.12"
 
-"@tauri-apps/plugin-fs@^2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/plugin-fs/-/plugin-fs-2.0.0-alpha.3.tgz#0555450730e3db565f11e36ca40f0f6a36229847"
-  integrity sha512-/itwHty0SMCgfT2TjM7T/zYixeoXWOMJSWGUc7HJCHYcMPpXxzq0HBn/w2f1O2/Td7naGiHEsIqBWHJmGdLZLA==
+"@tauri-apps/plugin-fs@^2.0.0-alpha.4":
+  version "2.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/plugin-fs/-/plugin-fs-2.0.0-alpha.4.tgz#dbea6fc6654ca8a0405b8ec6ddaab92d3d4264ce"
+  integrity sha512-+CQ1jDBx6lH/oaVe086WyYBAlW/cQdKkdzv6DJ3RKfje+pwglFEODAy6BfRgyM7FSHwktA6QTYsECNEAtih5vg==
   dependencies:
-    "@tauri-apps/api" "2.0.0-alpha.11"
+    "@tauri-apps/api" "2.0.0-alpha.12"
 
-"@tauri-apps/plugin-shell@^2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/plugin-shell/-/plugin-shell-2.0.0-alpha.3.tgz#f30aa7e2529794ea3dd6f1b6af79756b2fc27312"
-  integrity sha512-v4qLTE9DfzpYdcjZq3ASOC7gFtMtzIDWN5Bo2FheB+pHQvDRq8mrP8gTdkL4/9pQaOFlB0B+MKCwANYhD1jLEQ==
+"@tauri-apps/plugin-shell@^2.0.0-alpha.4":
+  version "2.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/plugin-shell/-/plugin-shell-2.0.0-alpha.4.tgz#6fc0514cc8d73ad338866c21bf3357ae4d4aad6b"
+  integrity sha512-Go/+EwGVuAXbSg2l2M5E2gT6cir66KV4CXC9P4gPHeead8Ar/B9wQvuINzcrYzL/HCcL7fFfKlqqu/XPTN2qvQ==
   dependencies:
-    "@tauri-apps/api" "2.0.0-alpha.11"
+    "@tauri-apps/api" "2.0.0-alpha.12"
 
 "@tauri-apps/plugin-sql@^2.0.0-alpha.4":
   version "2.0.0-alpha.4"

@@ -73,15 +73,14 @@ export default function DatabasePage() {
       <h1 className="text-xl font-medium underline">Users</h1>
       {!users && <div>No users</div>}
       {users && !selectedUser && (
-        <>
-          <UserTable
-            users={users}
-            deleteUser={deleteUser}
-            initUpdateUser={initUpdateUser}
-          />
-          <Button onClick={createUser}>Create User</Button>
-        </>
+        <UserTable
+          users={users}
+          deleteUser={deleteUser}
+          initUpdateUser={initUpdateUser}
+        />
       )}
+
+      {!selectedUser && <Button onClick={createUser}>Create User</Button>}
 
       {selectedUser && (
         <>
