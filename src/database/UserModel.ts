@@ -23,10 +23,10 @@ const tableSchema = {
 }
 
 export class UserModel extends DatabaseModel<CreateUserModel> {
-  protected dbName = 'random.db'
-  protected tableName = 'users_t_f'
+  protected dbName = 'example_app.db'
+  protected tableName = 'example_users'
   protected softDelete = true
-  protected timestamps = false
+  protected timestamps = true
 
   constructor() {
     super(tableSchema)
