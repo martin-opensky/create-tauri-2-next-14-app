@@ -201,6 +201,22 @@ export class DatabaseModel<T> {
     }
   }
 
+  async query(
+    whereClause: string,
+    params: Array<string | number>,
+  ): Promise<Array<T & CoreFields> | undefined> {
+    if (!this.tableName || !this.db || !this.tableSchema) {
+      throw new Error('Query: Database not initialized')
+    }
+
+    let sql = `SELECT * FROM ${this.tableName} WHERE ${whereClause}`
+    const result: Array<T & CoreFields> = await this.db.select(sql, params)
+
+    if (!result || result.length === 0) return undefined
+
+    return result.length > 0 ? result : undefined
+  }
+
   async close() {
     if (this.db) {
       await this.db.close()
