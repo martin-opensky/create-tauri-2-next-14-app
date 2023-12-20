@@ -1,3 +1,5 @@
+// TODO: CONSIDER MULTI MODEL RELATIONS / QUERIES MAY BECOME DIFFICULT
+// Check https://sequelize.org/
 import Database from '@tauri-apps/plugin-sql'
 
 export enum SqliteType {
@@ -118,7 +120,8 @@ export class DatabaseModel<T> {
     }
 
     const result: Array<T & CoreFields> | undefined = await this.db.select(
-      `SELECT * FROM ${this.tableName}` + (this.softDelete ? ' ' : ''),
+      `SELECT * FROM ${this.tableName}` +
+        (this.softDelete ? ' WHERE deleted_at IS NULL ' : ''),
     )
 
     if (!result || result.length === 0) return undefined
@@ -161,7 +164,10 @@ export class DatabaseModel<T> {
     return this.get(createQuery.lastInsertId)
   }
 
-  async update(id: number, data: { [K in keyof T]: string | number }) {
+  async update(
+    id: number,
+    data: { [K in keyof T]: string | number },
+  ): Promise<boolean> {
     if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Update: Database not initialized')
     }
@@ -179,7 +185,9 @@ export class DatabaseModel<T> {
     }
     sql += ' WHERE id=?'
 
-    return await this.db.execute(sql, [...values, id])
+    const result = await this.db.execute(sql, [...values, id])
+
+    return result.rowsAffected > 0
   }
 
   async delete(id: number) {
@@ -189,21 +197,24 @@ export class DatabaseModel<T> {
 
     let sql = ''
     if (this.softDelete) {
+      console.log('soft delete')
       sql = `UPDATE ${this.tableName} SET deleted_at = datetime('now')`
       if (this.timestamps) {
         sql += ", updated_at = datetime('now')"
       }
       sql += ' WHERE id=?'
-      return await this.db.execute(sql, [id])
     } else {
       sql = `DELETE FROM ${this.tableName} WHERE id=?`
-      return await this.db.execute(sql, [id])
     }
+
+    const result = await this.db.execute(sql, [id])
+
+    return result.rowsAffected > 0
   }
 
   async query(
     whereClause: string,
-    params: Array<string | number>,
+    params: Array<string | number> = [],
   ): Promise<Array<T & CoreFields> | undefined> {
     if (!this.tableName || !this.db || !this.tableSchema) {
       throw new Error('Query: Database not initialized')

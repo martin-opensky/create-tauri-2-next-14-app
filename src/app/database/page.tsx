@@ -1,10 +1,8 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { UserModel, IUserModel } from '@/database/UserModel'
+import { userModel, IUserModel } from '@/database/UserModel'
 import UserTable from '@/components/UserTable'
 import Button from '@/components/Button'
-
-const userModel = new UserModel()
 
 export default function DatabasePage() {
   const [users, setUsers] = useState<IUserModel[] | undefined>()
@@ -12,32 +10,32 @@ export default function DatabasePage() {
 
   const fetchUsers = async () => {
     const users = await userModel.all()
+    // users.map((user) => {
+    //   user
+    // }
     console.log(users)
     setUsers(users)
   }
 
   useEffect(() => {
-    if (userModel) {
-      fetchUsers()
-    }
+    fetchUsers()
   }, [])
 
   const createUser = useCallback(async () => {
-    if (userModel) {
-      await userModel.create({
-        name: 'John Doe',
-        email: 'john.doe@gmail.com',
-      })
+    await userModel.create({
+      name: 'John Doe',
+      email: 'john.doe@gmail.com',
+    })
 
-      fetchUsers()
-    }
+    fetchUsers()
   }, [])
 
   const deleteUser = useCallback(async (id: number) => {
-    if (userModel) {
-      await userModel.delete(id)
-      fetchUsers()
-    }
+    const result = await userModel.delete(id)
+
+    console.log(result, 'Deleted')
+
+    fetchUsers()
   }, [])
 
   const initUpdateUser = useCallback(async (user: IUserModel) => {
@@ -61,11 +59,11 @@ export default function DatabasePage() {
   )
 
   const updateUser = useCallback(async (user: IUserModel) => {
-    if (userModel) {
-      await userModel.update(user.id, user)
-      await fetchUsers()
-      setSelectedUser(undefined)
-    }
+    const result = await userModel.update(user.id, user)
+
+    console.log(result, 'Updated')
+    await fetchUsers()
+    setSelectedUser(undefined)
   }, [])
 
   return (
