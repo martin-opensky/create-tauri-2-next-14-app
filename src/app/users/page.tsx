@@ -68,8 +68,7 @@ interface UsersTableProps {
 }
 
 function UsersTable({ users, deleteUser }: UsersTableProps) {
-  if (users.length === 0)
-    return <Text className="text-red-500">No users could be found...</Text>
+  if (users.length === 0) return <Text>No users could be found...</Text>
 
   return (
     <div className="w-full">
