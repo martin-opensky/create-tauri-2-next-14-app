@@ -13,7 +13,7 @@ export default function Navigation() {
         <NavItem text="Dialog" link="/dialog" />
         <NavItem text="Files" link="/file-system" />
         <NavItem text="Command" link="/command" />
-        <NavItem text="Database" link="/database" />
+        <NavItem text="Users" link="/users" />
       </section>
     </>
   )

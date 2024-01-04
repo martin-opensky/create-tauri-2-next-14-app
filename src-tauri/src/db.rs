@@ -1,6 +1,7 @@
 use std::fs;
 use std::path::Path;
 
+use dotenvy::dotenv;
 use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
@@ -15,7 +16,7 @@ pub fn init() {
     run_migrations();
 }
 
-pub fn _establish_db_connection() -> SqliteConnection {
+pub fn establish_db_connection() -> SqliteConnection {
     let db_path = get_db_path().clone();
 
     SqliteConnection::establish(db_path.as_str())
@@ -51,6 +52,12 @@ fn db_file_exists() -> bool {
 }
 
 fn get_db_path() -> String {
+    dotenv().expect("Failed to read .env file");
+
     let home_dir = dirs::home_dir().unwrap();
-    home_dir.to_str().unwrap().to_string() + "/.tauri-app-name/database.sqlite"
+    let db_path = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
+    println!("Database path: {}", home_dir.to_str().unwrap().to_string() + &db_path);
+    home_dir.to_str().unwrap().to_string() + &db_path
+
 }
