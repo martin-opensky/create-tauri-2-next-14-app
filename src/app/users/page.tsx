@@ -13,13 +13,14 @@ import {
 } from '@/components/table'
 import { IUser, selectUsers, setUsers } from '@/store/users'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { Text } from '@/components/text'
 
 export default function Database() {
   const dispatch = useAppDispatch()
   const users = useAppSelector(selectUsers)
 
   const getUsers = useCallback(async () => {
-    const _users: IUser[] = await invoke('get_users', { name: 'World' })
+    const _users = await invoke<IUser[]>('get_users')
 
     dispatch(setUsers(_users))
 
@@ -41,9 +42,19 @@ export default function Database() {
     getUsers()
   }
 
+  const deleteUser = async (id: string) => {
+    const user = await invoke<IUser>('delete_user', {
+      id,
+    })
+
+    console.log(user)
+
+    getUsers()
+  }
+
   return (
     <div className="ml-6 flex w-full flex-col gap-2 p-2">
-      <UsersTable users={users} />
+      <UsersTable users={users} deleteUser={deleteUser} />
       <div className="-ml-4 flex justify-start">
         <Button onClick={createUser}>Insert User</Button>
       </div>
@@ -53,9 +64,13 @@ export default function Database() {
 
 interface UsersTableProps {
   users: IUser[]
+  deleteUser: (id: string) => void
 }
 
-function UsersTable({ users }: UsersTableProps) {
+function UsersTable({ users, deleteUser }: UsersTableProps) {
+  if (users.length === 0)
+    return <Text className="text-red-500">No users could be found...</Text>
+
   return (
     <div className="w-full">
       <Table
@@ -63,7 +78,7 @@ function UsersTable({ users }: UsersTableProps) {
         dense
         grid
         striped
-        className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]"
+        className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)] "
       >
         <TableHead>
           <TableRow>
@@ -81,7 +96,9 @@ function UsersTable({ users }: UsersTableProps) {
               <TableCell className="text-zinc-500">{user.created_at}</TableCell>
               <TableCell className="flex gap-2">
                 <Button outline>Edit</Button>
-                <Button color="red">Delete</Button>
+                <Button color="red" onClick={() => deleteUser(user.id)}>
+                  Delete
+                </Button>
               </TableCell>
             </TableRow>
           ))}

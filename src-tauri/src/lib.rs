@@ -24,7 +24,8 @@ pub fn run() {
             greet,
             get_users,
             get_user_by_id,
-            create_user
+            create_user,
+            delete_user
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

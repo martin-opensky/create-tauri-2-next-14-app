@@ -39,3 +39,17 @@ pub fn create_user(name: String, email: String) -> User {
         .first::<User>(&mut connection)
         .expect("Error loading user")
 }
+
+pub fn delete_user(id: String) -> User {
+    let mut connection = establish_db_connection();
+    let user = dsl::users
+        .find(id.clone())
+        .first::<User>(&mut connection)
+        .expect("Error loading user");
+
+    diesel::delete(dsl::users.find(id))
+        .execute(&mut connection)
+        .expect("Error deleting user");
+
+    user
+}
