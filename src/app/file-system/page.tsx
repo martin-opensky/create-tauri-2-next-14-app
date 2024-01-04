@@ -2,6 +2,10 @@
 import { useState, useEffect } from 'react'
 import { open } from '@tauri-apps/plugin-dialog'
 import { readTextFile, writeTextFile } from '@tauri-apps/plugin-fs'
+import { Button } from '@/components/button'
+import { Textarea } from '@/components/textarea'
+import { Text } from '@/components/text'
+import { FolderOpenIcon, BoltIcon } from '@heroicons/react/16/solid'
 
 export default function Dialog() {
   const [output, setOutput] = useState<string>('')
@@ -50,27 +54,23 @@ export default function Dialog() {
 
   return (
     <>
-      <button
-        className="border border-slate-200 bg-slate-100 p-1"
-        onClick={triggerOpen}
-      >
+      <Button color="light" onClick={triggerOpen}>
+        <FolderOpenIcon />
         Open MD File
-      </button>
+      </Button>
 
-      <div>{output}</div>
+      <Text>{output}</Text>
       {fileContents && (
         <>
-          <textarea
-            className="flex h-44 w-[calc(100%-16px)] justify-center border border-slate-200 p-2"
+          <Textarea
+            className="flex h-44"
             onChange={(e) => setFileContents(e.target.value)}
             value={fileContents}
           />
-          <button
-            className="border border-slate-200 bg-slate-100 p-1"
-            onClick={() => triggerWrite(fileContents)}
-          >
+          <Button outline onClick={() => triggerWrite(fileContents)}>
+            <BoltIcon />
             Save
-          </button>
+          </Button>
         </>
       )}
     </>

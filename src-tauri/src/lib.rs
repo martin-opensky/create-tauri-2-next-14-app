@@ -4,11 +4,17 @@ fn greet(name: &str) -> String {
     format!("Hello! {}, you've been greeted from Rust!", name)
 }
 
+mod db;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let _ = fix_path_env::fix();
 
     tauri::Builder::default()
+    .setup(|_app | {
+        db::init();
+        Ok(())
+    })
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())

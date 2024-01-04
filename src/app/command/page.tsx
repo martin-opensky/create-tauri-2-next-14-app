@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react'
 import { Command } from '@tauri-apps/plugin-shell'
+import { Button } from '@/components/button'
+import { Text } from '@/components/text'
 
 export default function Invoke() {
   const [output, setOutput] = useState<string>('')
@@ -17,13 +19,14 @@ export default function Invoke() {
 
   return (
     <>
-      <button
+      <Button
+        color="light"
         className="border border-slate-200 bg-slate-100 p-1"
         onClick={triggerCommand}
       >
         Trigger Command
-      </button>
-      <div>{output}</div>
+      </Button>
+      <Text>{output}</Text>
     </>
   )
 }

@@ -1,4 +1,6 @@
 'use client'
+import { Button } from '@/components/button'
+import { Text } from '@/components/text'
 import { invoke } from '@tauri-apps/api/core'
 import { useState } from 'react'
 
@@ -13,13 +15,10 @@ export default function Invoke() {
 
   return (
     <>
-      <button
-        className="border border-slate-200 bg-slate-100 p-1"
-        onClick={invokeGreet}
-      >
+      <Button color="light" onClick={invokeGreet}>
         Invoke Greet
-      </button>
-      <div>{output}</div>
+      </Button>
+      <Text>{output}</Text>
     </>
   )
 }
